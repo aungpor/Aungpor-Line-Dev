@@ -1,6 +1,6 @@
 import React, { useMemo, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Search, Plus, Users, Crown, Timer, Mic, Moon, Sun, LogOut, Settings, MessageSquareText, Shield, Swords, Eye, EyeOff, CheckCircle2, AlertCircle, Flame, Ghost, ChevronRight, X, Copy, Lock, Globe, Filter } from "lucide-react";
+import { Users, Crown, Swords } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 
@@ -18,7 +18,7 @@ export default function WerewolfMobileApp() {
       <header className="sticky top-0 z-30 bg-background/80 backdrop-blur border-b">
         <div className="p-4 flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <img src="https://assets.cdn-hot.org/emoji/moon.svg" alt="moon" className="h-5 w-5"/>
+            <img src="/chess-board.svg" alt="moon" className="h-6 w-6"/>
             <span className="font-bold">Werewolf</span>
           </div>
           <div className="flex items-center gap-2">
