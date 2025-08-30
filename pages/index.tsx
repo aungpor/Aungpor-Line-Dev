@@ -2,6 +2,19 @@ import React, { useEffect, useMemo, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { Plus, Trash2, Link as LinkIcon, ClipboardCopy, Check } from "lucide-react";
 
+
+async function getAllUrl(): Promise<string[]> {
+  // Simulate fetching URLs (replace with your actual API call or logic)
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve([
+        "https://www.example.com",
+        "https://www.anotherexample.com",
+      ]);
+    }, 1000);
+  });
+}
+
 function normalizeUrl(raw: string): string | null {
   const s = raw.trim();
   if (!s) return null;
@@ -31,13 +44,22 @@ export default function AungporPCTransfer() {
   useEffect(() => {
     const saved = localStorage.getItem("aungpor_pc_transfer_urls");
     if (saved) {
-      try { setUrls(JSON.parse(saved)); } catch {}
+      try { setUrls(JSON.parse(saved)); } catch { }
     }
   }, []);
 
   useEffect(() => {
     localStorage.setItem("aungpor_pc_transfer_urls", JSON.stringify(urls));
   }, [urls]);
+
+  // Fetch URLs from getAllUrl() when the component mounts
+  useEffect(() => {
+    async function fetchUrls() {
+      const fetchedUrls = await getAllUrl();
+      setUrls(fetchedUrls); // Set the fetched URLs to the state
+    }
+    fetchUrls();
+  }, []); // This will run only once, after the component mounts
 
   const parsedLines = useMemo(() => {
     return bulkText
@@ -64,7 +86,7 @@ export default function AungporPCTransfer() {
       await navigator.clipboard.writeText(u);
       setCopied(u);
       setTimeout(() => setCopied(null), 1200);
-    } catch {}
+    } catch { }
   };
 
   return (
@@ -72,60 +94,53 @@ export default function AungporPCTransfer() {
       <header className="sticky top-0 z-20 backdrop-blur supports-[backdrop-filter]:bg-white/60 bg-white/80 border-b border-slate-200">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-2xl bg-slate-900 flex items-center justify-center text-white font-bold">AP</div>
             <div>
               <h1 className="text-xl font-semibold leading-tight">Aungpor-PC-Transfer</h1>
-              {/* <p className="text-xs text-slate-500">แบ่งพื้นที่แนวนอน 3:7 • ซ้ายใส่ข้อความ • ขวาแสดงลิสต์ URL</p> */}
             </div>
           </div>
         </div>
       </header>
 
-      <main className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-6">
-        <div className="grid grid-cols-1 md:grid-cols-10 gap-6">
+      <main className="mx-auto max-w-7xl px-0 sm:px-6 lg:pr-8 lg:pl-0 pb-6">
+        <div className="grid grid-cols-1 md:grid-cols-10 gap-6 h-[100vh]">
           {/* Left 3/10 with background image */}
-          <motion.section
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.25 }}
-            className="md:col-span-3 relative overflow-hidden rounded-2xl"
-            style={{
-              backgroundImage: `url('https://pbs.twimg.com/media/Gma1xsDaUAE4ulT?format=jpg&name=large')`,
-              backgroundSize: "cover",
-              backgroundPosition: "center",
-            }}
-          >
-            <div className="bg-black/50 w-full h-full p-4 sm:p-5 flex flex-col text-white">
-              <h2 className="text-base font-semibold mb-3">ช่องใส่ข้อความ</h2>
-              <p className="text-sm mb-3">วาง URL ได้หลายบรรทัด / คั่นด้วยช่องว่างหรือเครื่องหมายจุลภาค แล้วกดเพิ่ม</p>
-
-              <textarea
+          <div className="md:col-span-3 relative overflow-hidden">
+            <div className="bg-black/50 w-full h-full p-4 sm:p-5 flex flex-col items-center justify-center text-white"
+              style={{
+                backgroundImage: 'url(https://i.pinimg.com/736x/44/a9/a2/44a9a2f5962fe14494e2cb5ab9a5d4d0.jpg)',
+                backgroundSize: 'cover',
+                backgroundPosition: 'center'
+              }}>
+              <input
                 ref={inputRef}
                 value={bulkText}
                 onChange={(e) => setBulkText(e.target.value)}
-                placeholder="เช่น: example.com\nhttps://github.com\nnews.ycombinator.com"
-                className="min-h-[180px] w-full resize-y rounded-xl border border-white/30 px-3 py-2 outline-none focus:ring-4 focus:ring-white/30 bg-white/20 text-white placeholder-white/70"
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' && parsedLines.length > 0) {
+                    addUrls();
+                  }
+                }}
+                placeholder="ใส่ Url มาเลย!!!"
+                className="w-full max-w-md min-h-[50px] p-3 rounded-xl border border-white/30 outline-none  bg-white text-black placeholder-black/70"
               />
-
-              <div className="mt-4 flex items-center justify-between text-white/90">
-                <div className="text-xs">จะเพิ่ม <span className="font-medium">{parsedLines.length}</span> รายการ</div>
+              <div className="mt-4 flex items-center justify-center text-white/90 w-full max-w-md">
                 <button
                   onClick={addUrls}
                   disabled={parsedLines.length === 0}
-                  className="inline-flex items-center gap-2 rounded-2xl px-4 py-2 border border-white/40 shadow-sm hover:shadow disabled:opacity-50"
+                  className="w-full inline-flex items-center justify-center gap-2 rounded-2xl px-4 py-2 border border-white/50 bg-white text-black hover:bg-gray-200 opacity-80"
                 >
                   <Plus className="w-4 h-4" /> เพิ่ม URL
                 </button>
               </div>
             </div>
-          </motion.section>
+          </div>
 
           {/* Right 7/10 */}
           <motion.section
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.25, delay: 0.05 }}
-            className="md:col-span-7"
+            className="md:col-span-7 pt-6"
           >
             <div className="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
               <div className="px-4 sm:px-5 py-4 border-b border-slate-200 flex items-center justify-between">
