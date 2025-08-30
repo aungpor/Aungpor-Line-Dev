@@ -7,9 +7,7 @@ import AppFooter from "@/components/Footer/AppFooter";
 export default function App({ Component, pageProps }: AppProps) {
   return (
     <>
-      <div className="lg:min-h-[calc(100vh-104px)] min-h-[calc(100vh-48px)] lg:mx-[30px]">
-        <Component {...pageProps} />
-      </div>
+      <Component {...pageProps} />
     </>
   );
 }
