@@ -153,7 +153,7 @@ export default function AungporPCTransfer() {
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.25, delay: 0.05 }}
-            className="md:col-span-7 pt-6"
+            className="md:col-span-7 pt-6 hidden md:block"
           >
             <div className="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
               <div className="px-4 sm:px-5 py-4 border-b border-slate-200 flex items-center justify-between">
