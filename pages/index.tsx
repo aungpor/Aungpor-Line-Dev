@@ -40,7 +40,7 @@ export default function AungporPCTransfer() {
   const [bulkText, setBulkText] = useState("");
   const [urls, setUrls] = useState<string[]>([]);
   const [copied, setCopied] = useState<string | null>(null);
-  const inputRef = useRef<HTMLTextAreaElement | null>(null);
+  const inputRef = useRef<HTMLInputElement>(null); // Correct the type here
 
   useEffect(() => {
     const saved = localStorage.getItem("aungpor_pc_transfer_urls");
