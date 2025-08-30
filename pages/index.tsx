@@ -1,19 +1,20 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { Plus, Trash2, Link as LinkIcon, ClipboardCopy, Check } from "lucide-react";
+import { creatUrl, getAllUrl } from "@/services/url.service";
 
 
-async function getAllUrl(): Promise<string[]> {
-  // Simulate fetching URLs (replace with your actual API call or logic)
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve([
-        "https://www.example.com",
-        "https://www.anotherexample.com",
-      ]);
-    }, 1000);
-  });
-}
+// async function getAllUrl(): Promise<string[]> {
+//   // Simulate fetching URLs (replace with your actual API call or logic)
+//   return new Promise((resolve) => {
+//     setTimeout(() => {
+//       resolve([
+//         "https://www.example.com",
+//         "https://www.anotherexample.com",
+//       ]);
+//     }, 1000);
+//   });
+// }
 
 function normalizeUrl(raw: string): string | null {
   const s = raw.trim();
@@ -52,14 +53,18 @@ export default function AungporPCTransfer() {
     localStorage.setItem("aungpor_pc_transfer_urls", JSON.stringify(urls));
   }, [urls]);
 
-  // Fetch URLs from getAllUrl() when the component mounts
+
   useEffect(() => {
-    async function fetchUrls() {
-      const fetchedUrls = await getAllUrl();
-      setUrls(fetchedUrls); // Set the fetched URLs to the state
-    }
     fetchUrls();
-  }, []); // This will run only once, after the component mounts
+  }, []);
+
+  async function fetchUrls() {
+      const fetchedUrls = await getAllUrl();
+      const urlArray: string[] = fetchedUrls.map(item => item.url);
+      console.log(urlArray);
+      
+      setUrls(urlArray);
+    }
 
   const parsedLines = useMemo(() => {
     return bulkText
@@ -70,11 +75,19 @@ export default function AungporPCTransfer() {
 
   const addUrls = () => {
     if (parsedLines.length === 0) return;
-    setUrls((prev) => {
-      const set = new Set(prev);
-      for (const u of parsedLines) set.add(u);
-      return Array.from(set);
-    });
+
+    creatUrl({
+      url: parsedLines,
+      create_at: new Date()
+    })
+    fetchUrls()
+    // setUrls((prev) => {
+    //   const set = new Set(prev);
+    //   console.log(parsedLines);
+      
+    //   for (const u of parsedLines) set.add(u);
+    //   return Array.from(set);
+    // });
     setBulkText("");
     inputRef.current?.focus();
   };
@@ -101,7 +114,7 @@ export default function AungporPCTransfer() {
         </div>
       </header>
 
-      <main className="mx-auto max-w-7xl px-0 sm:px-6 lg:pr-8 lg:pl-0 pb-6">
+      <main className="mx-auto max-w-7xl px-0 sm:pr-6 lg:pr-8 lg:pl-0 pb-6">
         <div className="grid grid-cols-1 md:grid-cols-10 gap-6 h-[100vh]">
           {/* Left 3/10 with background image */}
           <div className="md:col-span-3 relative overflow-hidden">
@@ -147,9 +160,9 @@ export default function AungporPCTransfer() {
                 <h2 className="text-base font-semibold">ลิสต์ URL</h2>
                 {urls.length > 0 && (
                   <button
-                    onClick={() => setUrls([])}
+                    onClick={fetchUrls}
                     className="text-sm rounded-xl px-3 py-1.5 border border-slate-300 hover:shadow"
-                  >ลบทั้งหมด</button>
+                  >รีเฟรช</button>
                 )}
               </div>
 
@@ -159,7 +172,7 @@ export default function AungporPCTransfer() {
                 </div>
               ) : (
                 <ul className="divide-y divide-slate-100">
-                  {urls.map((u) => (
+                  {urls.slice(0, 10).map((u) => (
                     <li key={u} className="px-4 sm:px-5 py-3 flex items-center gap-3">
                       <img src={favicon(u)} alt="" className="w-6 h-6 rounded" />
                       <a
