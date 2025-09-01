@@ -104,7 +104,7 @@ export default function AungporPCTransfer() {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-slate-50 to-slate-100 text-slate-900">
-      <header className="sticky top-0 z-20 backdrop-blur supports-[backdrop-filter]:bg-white/60 bg-white/80 border-b border-slate-200">
+      <header className="hidden md:block sticky top-0 z-20 backdrop-blur supports-[backdrop-filter]:bg-white/60 bg-white/80 border-b border-slate-200">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div>
@@ -114,7 +114,8 @@ export default function AungporPCTransfer() {
         </div>
       </header>
 
-      <main className="mx-auto max-w-7xl px-0 sm:pr-6 lg:pr-8 lg:pl-0 pb-6">
+      {/* <main className="mx-auto max-w-7xl px-0 sm:pr-6 lg:pr-8 lg:pl-0 pb-6"> */}
+        <main className="px-0 sm:pr-6 lg:pr-8 lg:pl-0 ">
         <div className="grid grid-cols-1 md:grid-cols-10 gap-6 h-[100vh]">
           {/* Left 3/10 with background image */}
           <div className="md:col-span-3 relative overflow-hidden">
@@ -218,9 +219,9 @@ export default function AungporPCTransfer() {
         </div>
       </main>
 
-      <footer className="py-8 text-center text-sm text-slate-500">
+      {/* <footer className="py-8 text-center text-sm text-slate-500">
         © {new Date().getFullYear()} Aungpor-PC-Transfer
-      </footer>
+      </footer> */}
     </div>
   );
 }
