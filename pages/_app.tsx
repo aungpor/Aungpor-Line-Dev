@@ -7,7 +7,16 @@ import AppFooter from "@/components/Footer/AppFooter";
 export default function App({ Component, pageProps }: AppProps) {
   return (
     <>
-      <Component {...pageProps} />
+      <AppHeader/>
+
+      <div className="min-h-screen bg-gradient-to-b from-slate-50 to-slate-100 text-slate-900">
+        <Component {...pageProps} />
+      </div>
+
+
+      {/* <footer className="py-8 text-center text-sm text-slate-500">
+        © {new Date().getFullYear()} Aungpor-PC-Transfer
+      </footer> */}
     </>
   );
 }
