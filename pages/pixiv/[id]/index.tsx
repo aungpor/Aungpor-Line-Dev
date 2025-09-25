@@ -4,6 +4,11 @@ import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import { fetchBookById } from "@/services/novel.service";
 import { GetServerSidePropsContext } from "next";
+import { ThemeProvider, useTheme } from "next-themes";
+import Brightness4Icon from '@mui/icons-material/Brightness4';
+import NightlightIcon from '@mui/icons-material/Nightlight';
+import TextIncreaseIcon from '@mui/icons-material/TextIncrease';
+import TextDecreaseIcon from '@mui/icons-material/TextDecrease';
 
 export type book = {
   id: number;
@@ -21,23 +26,22 @@ interface IProps {
   book: book;
 }
 
-export default function NovelRead(props: IProps) {
-  const { book } = props;
+function NovelContent({ book }: IProps) {
   const router = useRouter();
   const [fontSize, setFontSize] = useState(18);
+  const { theme, setTheme } = useTheme(); // next-themes
 
   const increaseFont = () => setFontSize((prev) => Math.min(prev + 2, 32));
   const decreaseFont = () => setFontSize((prev) => Math.max(prev - 2, 12));
 
   const goPrev = () => {
-    if (book.seriesPrevId) router.push(`/novel/${book.seriesPrevId}`);
+    if (book.seriesPrevId) router.push(`/pixiv/${book.seriesPrevId}`);
   };
-
   const goNext = () => {
-    if (book.seriesNextId) router.push(`/novel/${book.seriesNextId}`);
+    if (book.seriesNextId) router.push(`/pixiv/${book.seriesNextId}`);
   };
 
-  // ✅ โหลด Google Translate และ auto translate
+  // โหลด Google Translate
   useEffect(() => {
     const addScript = document.createElement("script");
     addScript.src =
@@ -47,54 +51,63 @@ export default function NovelRead(props: IProps) {
     (window as any).googleTranslateElementInit = () => {
       new (window as any).google.translate.TranslateElement(
         {
-          pageLanguage: "zh-CN", // ภาษาต้นฉบับ = จีน
+          pageLanguage: "zh-CN",
           includedLanguages: "th",
           autoDisplay: false,
         },
         "google_translate_element"
       );
 
-      // ✅ บังคับ auto translate เป็นไทย
       setTimeout(() => {
         const select = document.querySelector<HTMLSelectElement>(
           ".goog-te-combo"
         );
         if (select) {
-          select.value = "th"; // เลือกภาษาไทย
-          select.dispatchEvent(new Event("change")); // trigger event
+          select.value = "th";
+          select.dispatchEvent(new Event("change"));
         }
       }, 1000);
     };
   }, []);
 
   return (
-    <div className="mx-auto max-w-7xl px-1 sm:px-6 lg:px-8 my-8">
-      {/* Translate container (ไม่ต้องให้ user กด) */}
+    <div className="mx-auto max-w-7xl px-1 sm:px-6 lg:px-8 my-8 bg-white dark:bg-gray-900 text-slate-900 dark:text-slate-100 transition-colors duration-300">
+      {/* Translate container */}
       <div id="google_translate_element" className="hidden"></div>
 
       {/* Header */}
-      <div className="flex justify-between items-center mb-6">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
         <h2 className="text-xl font-bold flex items-center gap-2">
           {book.title}
         </h2>
 
-        {/* Font size controls */}
-        <div className="flex gap-2">
+        <div className="flex flex-row gap-2 items-start sm:items-center">
+          {/* Font size */}
           <button
             onClick={decreaseFont}
-            className="px-3 py-1 rounded-lg border bg-gray-100 hover:bg-gray-200"
+            className="px-3 py-1 rounded-lg border bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600"
           >
-            A-
+            <TextDecreaseIcon />
           </button>
           <button
             onClick={increaseFont}
-            className="px-3 py-1 rounded-lg border bg-gray-100 hover:bg-gray-200"
+            className="px-3 py-1 rounded-lg border bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600"
           >
-            A+
+            <TextIncreaseIcon />
+          </button>
+
+          {/* Theme switch */}
+          <button
+            onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+            className="px-3 py-1 rounded-lg border bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600"
+          >
+            {theme === "light" ? <Brightness4Icon /> : <NightlightIcon />}
           </button>
         </div>
       </div>
 
+
+      {/* Content */}
       <div
         className="leading-relaxed lg:min-h-[calc(100vh-104px)] min-h-[calc(100vh-48px)]"
         style={{ fontSize: `${fontSize}px` }}
@@ -109,16 +122,15 @@ export default function NovelRead(props: IProps) {
         })}
       </div>
 
-      {/* Footer buttons */}
+      {/* Footer */}
       <div className="flex justify-between items-center mt-10 border-t pt-4 gap-4">
         <button
           onClick={goPrev}
           disabled={!book.seriesPrevId}
-          className={`min-w-[120px] flex items-center gap-2 px-4 py-2 rounded-lg ${
-            book.seriesPrevId
-              ? "bg-gray-100 hover:bg-gray-200"
-              : "bg-gray-200 text-gray-400 cursor-not-allowed"
-          }`}
+          className={`min-w-[120px] flex items-center gap-2 px-4 py-2 rounded-lg ${book.seriesPrevId
+            ? "bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600"
+            : "bg-gray-200 text-gray-400 cursor-not-allowed"
+            }`}
         >
           <ArrowBackIosNewIcon fontSize="small" /> ก่อนหน้า
         </button>
@@ -126,16 +138,23 @@ export default function NovelRead(props: IProps) {
         <button
           onClick={goNext}
           disabled={!book.seriesNextId}
-          className={`min-w-[120px] flex items-center justify-center gap-2 px-4 py-2 rounded-lg ${
-            book.seriesNextId
-              ? "bg-gray-100 hover:bg-gray-200"
-              : "bg-gray-200 text-gray-400 cursor-not-allowed"
-          }`}
+          className={`min-w-[120px] flex items-center justify-center gap-2 px-4 py-2 rounded-lg ${book.seriesNextId
+            ? "bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600"
+            : "bg-gray-200 text-gray-400 cursor-not-allowed"
+            }`}
         >
           ถัดไป <ArrowForwardIosIcon fontSize="small" />
         </button>
       </div>
     </div>
+  );
+}
+
+export default function NovelReadWrapper(props: IProps) {
+  return (
+    <ThemeProvider attribute="class" defaultTheme="system">
+      <NovelContent {...props} />
+    </ThemeProvider>
   );
 }
 

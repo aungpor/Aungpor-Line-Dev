@@ -23,7 +23,7 @@ export default function NovelRead() {
   };
 
   return (
-    <div className="mx-auto max-w-md px-4 my-16 ">
+    <div className="mx-auto max-w-md px-4 lg:my-8 my-4">
       <form
         onSubmit={handleSubmit}
         className="flex flex-col gap-3 sm:flex-row sm:items-center"
