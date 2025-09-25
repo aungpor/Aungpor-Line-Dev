@@ -12,33 +12,13 @@ import { useRouter } from "next/router";
 
 export default function Home() {
   const router = useRouter();
-
-  const images = [
-    "https://pbs.twimg.com/media/G04YxgKboAA7Nf-?format=jpg&name=4096x4096",
-    "https://pbs.twimg.com/media/G0QCnPKaUAAzPCs?format=jpg&name=4096x4096",
-  ];
-
+  
   const topics = [
     { icon: <TvIcon fontSize="large" />, title: "Home TV", description: "TV Transfer", path:"/home-tv"}
   ];
 
   return (
-    <div className="flex flex-col m-auto my-[30px] items-center w-auto lg:w-[1200px] gap-[20px]">
-
-      <div className="relative w-full overflow-hidden rounded-xl bg-slate-100">
-        <div
-          className="flex gap-[30px]"
-        >
-          {images.map((src, i) => (
-            <img
-              key={i}
-              src={src}
-              alt={`banner-${i}`}
-              className="w-[500px] h-[300px] object-cover rounded-lg shadow"
-            />
-          ))}
-        </div>
-      </div>
+   <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 my-[30px]">
 
       <div className="w-full">
         <h2 className="text-lg font-bold mb-4">Recommended topics</h2>
