@@ -1,4 +1,4 @@
-
+import Link from "next/link";
 
 const AppHeader = () => {
   return (
@@ -7,7 +7,9 @@ const AppHeader = () => {
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div>
-              <h1 className="text-xl font-semibold leading-tight">Aungpor-PC-Transfer</h1>
+              <Link href="/" className="text-xl font-semibold leading-tight hover:text-blue-600 transition-colors">
+                Aungpor-PC-Transfer
+              </Link>
             </div>
           </div>
         </div>
