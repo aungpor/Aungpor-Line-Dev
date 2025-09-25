@@ -28,7 +28,7 @@ interface IProps {
 
 function NovelContent({ book }: IProps) {
   const router = useRouter();
-  const [fontSize, setFontSize] = useState(18);
+  const [fontSize, setFontSize] = useState(20);
   const { theme, setTheme } = useTheme(); // next-themes
 
   const increaseFont = () => setFontSize((prev) => Math.min(prev + 2, 32));
