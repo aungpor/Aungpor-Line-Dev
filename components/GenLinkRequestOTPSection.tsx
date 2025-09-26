@@ -94,7 +94,7 @@ const GenLinkRequestOTPSection = (props: IProps) => {
   };
 
   return (
-    <Form form={form} className={`flex flex-col items-center min-h-screen bg-white px-6 py-10 ${className}`}>
+    <Form form={form} className={`flex flex-col items-center justify-center min-h-screen bg-white px-6 py-10 ${className}`}>
       {/* Logo */}
       <div className="mb-6">
         <img src={PATOIS_LOGO} alt="logo" className="h-10" />

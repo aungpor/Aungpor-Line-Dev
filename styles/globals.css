@@ -130,3 +130,8 @@ body > .skiptranslate {
 body {
     top: 0px !important;
 }
+
+.ant-form-item-additional {
+  margin-top: 10px;
+  text-align: center;
+}

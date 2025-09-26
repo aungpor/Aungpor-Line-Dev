@@ -27,10 +27,10 @@ const GenLinkModalContent = (props: IProps) => {
   // };
 
   return (
-    <div className={`authen-modal-content ${className} !py-[40px]`}>
+    <div className={`authen-modal-content  ${className} !py-[40px]`}>
       {/* <img alt="patois-logo" src={PATOIS_LOGO} className="w-[130px] h-[40px]" /> */}
       {/* <AuthRequestOTPSection /> */}
-      <GenLinkRequestOTPSection />
+      <GenLinkRequestOTPSection className=""/>
     </div>
   );
 };
