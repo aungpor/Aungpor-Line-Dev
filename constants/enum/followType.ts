@@ -1,0 +1,9 @@
+export enum FOLLOW_VALUE_TYPE {
+  FOLLOW = "Y",
+  UNFOLLOW = "N",
+}
+
+export enum FOLLOW_TYPE {
+  FOLLOWING = "FOLLOWING",
+  FOLLOWER = "FOLLOWER",
+}

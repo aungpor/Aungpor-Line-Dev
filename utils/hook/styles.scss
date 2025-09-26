@@ -1,0 +1,22 @@
+.message-container {
+
+    .ant-message-notice-content {
+        border-radius: 8px;
+        padding: 8px 16px;
+
+        .ant-message-custom-content {
+            display: flex;
+            align-items: center;
+            font-size: 14px;
+            line-height: 20px;
+
+            .anticon-check-circle {
+                color: #00B751;
+            }
+
+            .anticon-close-circle {
+                color: #C70013
+            }
+        }
+    }
+}
