@@ -13,7 +13,8 @@ import useCountdown from "@/utils/hook/useCountdown";
 import { getSentLoginOTPBody } from "@/utils/transformData.utils";
 import { shallow } from "zustand/shallow";
 import { InputProps } from "react-otp-input";
-import { PATOIS_LOGO } from "@/constants/component";
+import { PATOIS_LOGO, PTG_LOGO } from "@/constants/component";
+import { useRouter } from "next/router";
 
 interface IProps {
   className?: string;
@@ -22,6 +23,7 @@ interface IProps {
 const GenLinkRequestOTPSection = (props: IProps) => {
   const { className = "" } = props;
   const [form] = Form.useForm();
+  const router = useRouter();
 
   const { countdown, countdownString, handleCountdown } = useCountdown({
     seconds: 60,
@@ -70,6 +72,7 @@ const GenLinkRequestOTPSection = (props: IProps) => {
       const response = await checkOtp(body);
       if (!response?.message) {
         setOtpModal(false);
+        router.push("/register")
       } else {
         if (response.message === SIGN_IN_ERROR_RESPONSE.EXPIRED) {
           form.setFields([
@@ -97,7 +100,7 @@ const GenLinkRequestOTPSection = (props: IProps) => {
     <Form form={form} className={`flex flex-col items-center justify-center min-h-screen bg-white px-6 py-10 ${className}`}>
       {/* Logo */}
       <div className="mb-6">
-        <img src={PATOIS_LOGO} alt="logo" className="h-10" />
+        <img src={PTG_LOGO} alt="logo" className="h-[100px]" />
       </div>
 
       {/* Title */}

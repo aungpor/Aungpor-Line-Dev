@@ -3,7 +3,7 @@ import MenuBookIcon from '@mui/icons-material/MenuBook';
 import TvIcon from '@mui/icons-material/Tv';
 import { useRouter } from "next/router";
 
-export default function Home() {
+export default function Register() {
   const router = useRouter();
 
   const topics = [
@@ -14,8 +14,7 @@ export default function Home() {
   return (
     <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 ">
       <div className="w-full">
-        <GenLinkModalContent/>
-
+        หน้า Register
       </div>
     </div>
   );

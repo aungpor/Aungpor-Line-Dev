@@ -184,6 +184,8 @@ export const PT_LOGO = "/images/logo/pt-logo.png";
 export const PATOIS_LOGO =
   "https://wonknokstoragestdaccount.blob.core.windows.net/patois-picture/logo2024/logo-patois.png";
 
+export const PTG_LOGO = "https://i.postimg.cc/PJ8QYbfJ/1147px-PTG-Energy-Logo-svg.png"
+
 export const PATOIS_IMAGE_ALT =
   "Patois พาทัวร์ พาทัวร์พาไปกิน พาทัวร์รวมร้านอร่อยเด็ด รีวิวร้านอาหาร สูตรอาหาร โรงแรม ที่พัก และสถานที่ท่องเที่ยว on patois.com";
 
