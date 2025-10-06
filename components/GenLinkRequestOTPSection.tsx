@@ -40,7 +40,17 @@ const GenLinkRequestOTPSection = (props: IProps) => {
 
   useEffect(() => {
     handleCountdown();
+    setOtpInfomation({
+      phoneNumber: "0813119090",
+      refCode: "",
+      times: 1,
+    })
   }, []);
+
+  useEffect(() => {
+    console.log(otpInfomation);
+
+  }, [otpInfomation])
 
   const onInputOTPChange = async (value: string) => {
     form.setFields([{ name: "otpNumber", errors: [] }]);
@@ -119,7 +129,7 @@ const GenLinkRequestOTPSection = (props: IProps) => {
           numInputs={6}
           className="!w-[42px] !h-[48px] text-xl text-center border border-gray-300 rounded-md focus:border-green-500 focus:ring-2 focus:ring-green-500" renderInput={function (inputProps: InputProps, index: number): React.ReactNode {
             throw new Error("Function not implemented.");
-          } }        />
+          }} />
       </div>
 
       {/* Countdown / Resend */}
