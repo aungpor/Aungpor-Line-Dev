@@ -132,8 +132,8 @@ body {
 }
 
 .ant-form-item-additional {
-  margin-top: 10px;
-  text-align: center;
+  /* margin-top: 10px; */
+  text-align: start;
 }
 
 .text-input-container {
