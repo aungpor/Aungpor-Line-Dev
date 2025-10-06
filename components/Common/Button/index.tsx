@@ -2,8 +2,6 @@ import { Button, ButtonProps } from "antd";
 import { CSSProperties } from "react";
 import SpinDotLoading from "../Loading/SpinDotLoading";
 
-
-
 interface IProps extends Omit<ButtonProps, "type"> {
   title: string;
   className?: string;
@@ -32,75 +30,82 @@ const AppButton = (props: IProps) => {
     ...rest
   } = props;
 
+  /** 🎨 Fill button styles */
   const getFillButtonStyles = () => {
     switch (type) {
       case "primary":
-        return `bg-[#00B751] hover:bg-[#6ADE93] active:bg-[#006B37] focus:bg-[#00B751] hover:border-[#00B751] focus:border-[#00B751]`;
+        return `!bg-[#00B751] hover:!bg-[#6ADE93] active:!bg-[#006B37] focus:!bg-[#00B751] !border-[#00B751] hover:!border-[#00B751]`;
       case "secondary":
-        return `bg-[#F2F2F2] hover:bg-[#D9D9D9] active:bg-[#8C8C8C] focus:bg-[#F2F2F2] hover:border-[#F2F2F2] focus:border-[#F2F2F2]`;
+        return `!bg-[#F2F2F2] hover:!bg-[#D9D9D9] active:!bg-[#8C8C8C] focus:!bg-[#F2F2F2] !border-[#F2F2F2] hover:!border-[#F2F2F2]`;
       case "tertiary":
-        return `bg-[#FA6315] hover:bg-[#FFDAB8] active:bg-[#872200] focus:bg-[#FA6315] hover:border-[#FA6315] focus:border-[#FA6315]`;
+        return `!bg-[#FA6315] hover:!bg-[#FFDAB8] active:!bg-[#872200] focus:!bg-[#FA6315] !border-[#FA6315] hover:!border-[#FA6315]`;
+      case "danger":
+        return `!bg-[#FF4D4F] hover:!bg-[#FF7875] active:!bg-[#D9363E] focus:!bg-[#FF4D4F] !border-[#FF4D4F] hover:!border-[#FF4D4F]`;
+      default:
+        return `!bg-[#00B751] hover:!bg-[#6ADE93]`;
     }
   };
 
-  const getEnabledStyles = (outline: string) => {
+  /** 🎨 Outline button styles */
+  const getOutlineButtonStyles = (outline: string) =>
+    `!shadow-none !bg-white hover:!bg-[#F2F2F2] active:!bg-white 
+     !border-solid !border-[${outline}] hover:!border-[${outline}] focus:!border-[${outline}]`;
+
+  /** 🎨 Text button styles */
+  const getTextButtonStyles = () =>
+    `!shadow-none !bg-white hover:!bg-[#F2F2F2] active:!bg-white`;
+
+  /** 🎨 Disabled styles */
+  const getDisabledStyles = () => {
+    const base = type === "secondary" ? "#F2F2F2" : "#D9D9D9";
+    switch (variant) {
+      case "fill":
+        return `disabled:!bg-[${base}] disabled:hover:!bg-[${base}] disabled:!border-none`;
+      case "outline":
+        return `disabled:!bg-white disabled:hover:!bg-white disabled:!border-[#D9D9D9] disabled:!border-solid`;
+      case "text":
+        return `disabled:!bg-white disabled:hover:!bg-white`;
+    }
+  };
+
+  /** 🎨 Combine style sets */
+  const getContainerStyles = (outline: string) => {
+    if (disabled) return getDisabledStyles();
+
     switch (variant) {
       case "fill":
         return getFillButtonStyles();
       case "outline":
-        return `shadow-none bg-[#FFFFFF] hover:bg-[#F2F2F2] active:bg-[#FFFFFF] !border-solid !border-[${outline}] hover:border-[${outline}] focus:border-[${outline}]`;
+        return getOutlineButtonStyles(outline);
       case "text":
-        return "shadow-none bg-[#FFFFFF] hover:bg-[#F2F2F2] active:bg-[#FFFFFF]";
-    }
-  };
-
-  const getDisabledStyles = () => {
-    const color = type === "secondary" ? "#F2F2F2" : "#D9D9D9";
-    switch (variant) {
-      case "fill":
-        return `disabled:bg-[${color}] disabled:hover:!bg-[${color}]`;
-      case "outline":
-        return "disabled:bg-[#FFF] disabled:hover:!bg-[#FFF] disabled:border disabled:border-solid disabled:border-[#D9D9D9]";
-      case "text":
-        return "disabled:bg-[#FFF] disabled:hover:!bg-[#FFF]";
-    }
-  };
-
-  const getContainerStyles = (outline: string) => {
-    const enabledStyles = getEnabledStyles(outline);
-
-    const disabledStyles = getDisabledStyles();
-    if (disabled) {
-      return disabledStyles;
-    }
-
-    return enabledStyles;
-  };
-
-  const containerStyles = (() => {
-    switch (type) {
-      case "primary":
-        return getContainerStyles("#00B751");
-      case "secondary":
-        return getContainerStyles("#D9D9D9");
-      case "tertiary":
-        return getContainerStyles("#FA6315");
+        return getTextButtonStyles();
       default:
-        return "bg-[#00B751]";
+        return "";
     }
-  })();
+  };
 
+  const outlineColor =
+    type === "primary"
+      ? "#00B751"
+      : type === "secondary"
+      ? "#D9D9D9"
+      : type === "tertiary"
+      ? "#FA6315"
+      : "#FF4D4F";
+
+  const containerStyles = getContainerStyles(outlineColor);
+
+  /** 🖋 Text color logic */
   const getTextColor = (
     fill: string,
     fillDisable: string,
     outline: string,
-    outlineDisable: string,
+    outlineDisable: string
   ) => {
     if (disabled) {
       return variant === "fill" ? fillDisable : outlineDisable;
-    } else {
-      return variant === "fill" ? fill : outline;
     }
+    return variant === "fill" ? fill : outline;
   };
 
   const textColor = (() => {
@@ -111,6 +116,8 @@ const AppButton = (props: IProps) => {
         return getTextColor("#303030", "#C7C7C7", "#303030", "#D9D9D9");
       case "tertiary":
         return getTextColor("#FFFFFF", "#8C8C8C", "#FA6315", "#D9D9D9");
+      case "danger":
+        return getTextColor("#FFFFFF", "#8C8C8C", "#FF4D4F", "#D9D9D9");
       default:
         return "#FFFFFF";
     }
@@ -119,18 +126,13 @@ const AppButton = (props: IProps) => {
   return (
     <Button
       disabled={disabled || isLoading}
-      className={`button-container ${containerStyles} ${className}`}
-      style={{ borderRadius: 8, ...style }}
+      className={`button-container !rounded-[8px] !h-[40px] !w-full ${containerStyles} ${className}`}
+      style={style}
       {...rest}
     >
-      <div
-        style={{ color: textColor }}
-        className={`button-text ${textClassName}`}
-      >
+      <div style={{ color: textColor }} className={`button-text ${textClassName}`}>
         <div className="flex flex-row items-center justify-center gap-[8px]">
-          {isLoading && (
-            <SpinDotLoading active={isLoading} className={"!h-[20px]"} />
-          )}
+          {isLoading && <SpinDotLoading active={isLoading} className="!h-[20px]" />}
           {title}
         </div>
       </div>
