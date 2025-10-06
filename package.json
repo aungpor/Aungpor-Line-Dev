@@ -37,6 +37,7 @@
     "puppeteer": "^24.16.1",
     "react": "19.1.0",
     "react-dom": "19.1.0",
+    "react-input-mask": "^2.0.4",
     "react-otp-input": "^3.1.1",
     "shadcn-ui": "^0.9.5",
     "zustand": "^5.0.8"

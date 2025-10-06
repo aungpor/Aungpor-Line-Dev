@@ -1,0 +1,19 @@
+button.button-container {
+    @apply flex justify-center items-center w-fit h-fit py-[8px] px-[16px] border-none;
+
+    .ant-btn-loading-icon {
+        @apply flex justify-center items-center text-white
+    }
+
+    svg {
+        margin-right: 8px;
+    }
+}
+
+button.button-container.ant-btn-loading {
+    @apply cursor-not-allowed
+}
+
+.button-text {
+    @apply text-[14px] leading-[20px] font-[500]
+}

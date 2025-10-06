@@ -12,7 +12,7 @@ export const useTextInputRules = (
     if (required) {
       const requiredRule: Rule = {
         required,
-        message: requiredMessage ?? `ระบุ​${name ?? ""}`,
+        message: requiredMessage ?? `${name ?? ""}`,
       };
       rules.push(requiredRule);
     }
