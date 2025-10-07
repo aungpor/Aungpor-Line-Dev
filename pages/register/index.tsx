@@ -29,8 +29,8 @@ export default function Register() {
           <img src={PTG_LOGO} alt="logo" className="h-[100px]" />
         </div>
 
-        <div className="flex flex-col items-center text-center">
-          <div className="text-xl font-semibold">ลงทะเบียน</div>
+        <div className="flex flex-col items-center text-center gap-[5px]">
+          <div className="text-xl font-medium">ลงทะเบียน</div>
           <div className="text-gray-600">
             กรุณากรอกรหัสผู้เช่า และรอรับรหัส OTP เพื่อยืนยัน
           </div>

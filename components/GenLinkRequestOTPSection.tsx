@@ -107,18 +107,24 @@ const GenLinkRequestOTPSection = (props: IProps) => {
   };
 
   return (
-    <Form form={form} className={`flex flex-col items-center justify-center min-h-screen bg-white px-6 py-10 ${className}`}>
+    <Form form={form} className={`flex flex-col items-center justify-start bg-white px-6 py-10 gap-[25px] ${className}`}>
       {/* Logo */}
       <div className="mb-6">
         <img src={PTG_LOGO} alt="logo" className="h-[100px]" />
       </div>
 
-      {/* Title */}
-      <div className="text-xl font-semibold mb-2">ใส่รหัสยืนยัน</div>
-      <div className="text-gray-600 text-center mb-6">
-        กรุณาใส่รหัสยืนยันตัวตนที่ถูกส่งไปยัง <br />
-        หมายเลข <span className="font-bold">{otpInfomation.phoneNumber}</span>
+      <div className="flex flex-col items-center justify-center gap-[10px]">
+        <div className="flex flex-col items-center justify-center">
+          <div className="text-xl font-medium mb-2">กรุณาระบุรหัส OTP 6 หลัก</div>
+          <div className="text-xl font-medium mb-2">ที่ได้รับทาง SMS</div>
+        </div>
+
+        <div className="flex flex-col items-center justify-center">
+          <div className="">SMS ถูกส่งไปยังหมายเลข</div>
+          <div>xxx-xxx-1234</div>
+        </div>
       </div>
+
 
       {/* OTP Input */}
       <div className="mb-4">
@@ -133,20 +139,22 @@ const GenLinkRequestOTPSection = (props: IProps) => {
       </div>
 
       {/* Countdown / Resend */}
-      {countdown > 0 ? (
-        <div className="text-sm text-gray-500">
-          (Ref Code: {otpInfomation.refCode}) Resend OTP in{" "}
-          <span className="text-red-500">{countdownString}</span>
-        </div>
-      ) : (
-        <div
-          onClick={onResetOTPHandler}
-          className="text-sm text-green-600 cursor-pointer hover:underline"
-        >
-          ส่งอีกครั้ง
-        </div>
-      )}
-    </Form>
+      {
+        countdown > 0 ? (
+          <div className="text-sm text-gray-500">
+            (Ref Code: {otpInfomation.refCode}) Resend OTP in{" "}
+            <span className="text-red-500">{countdownString}</span>
+          </div>
+        ) : (
+          <div
+            onClick={onResetOTPHandler}
+            className="text-sm text-green-600 cursor-pointer hover:underline"
+          >
+            ส่งอีกครั้ง
+          </div>
+        )
+      }
+    </Form >
   );
 };
 
