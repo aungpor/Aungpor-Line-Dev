@@ -15,6 +15,7 @@ import { shallow } from "zustand/shallow";
 import { InputProps } from "react-otp-input";
 import { PATOIS_LOGO, PTG_LOGO } from "@/constants/component";
 import { useRouter } from "next/router";
+import AppButton from "./Common/Button";
 
 interface IProps {
   className?: string;
@@ -42,7 +43,7 @@ const GenLinkRequestOTPSection = (props: IProps) => {
     handleCountdown();
     setOtpInfomation({
       phoneNumber: "0813119090",
-      refCode: "",
+      refCode: "TEST",
       times: 1,
     })
   }, []);
@@ -52,12 +53,15 @@ const GenLinkRequestOTPSection = (props: IProps) => {
 
   }, [otpInfomation])
 
+  const otpValue = Form.useWatch("otpNumber", form) || ""; // fallback เป็น string ว่าง
+
+
   const onInputOTPChange = async (value: string) => {
     form.setFields([{ name: "otpNumber", errors: [] }]);
 
-    if (value.length >= 6) {
-      await loginWithPhoneNumberHandler();
-    }
+    // if (value.length >= 6) {
+    //   await loginWithPhoneNumberHandler();
+    // }
   };
 
   const onResetOTPHandler = async () => {
@@ -106,6 +110,11 @@ const GenLinkRequestOTPSection = (props: IProps) => {
     }
   };
 
+  const onSubmit = async () => {
+    if (otpValue?.length !== 6) return; // ป้องกันกรอกไม่ครบ
+    await loginWithPhoneNumberHandler();
+  };
+
   return (
     <Form form={form} className={`flex flex-col items-center justify-start bg-white px-6 py-10 gap-[25px] ${className}`}>
       {/* Logo */}
@@ -119,15 +128,15 @@ const GenLinkRequestOTPSection = (props: IProps) => {
           <div className="text-xl font-medium mb-2">ที่ได้รับทาง SMS</div>
         </div>
 
-        <div className="flex flex-col items-center justify-center">
+        <div className="flex flex-col items-center justify-center gap-[5px]">
           <div className="">SMS ถูกส่งไปยังหมายเลข</div>
-          <div>xxx-xxx-1234</div>
+          <div className="text-green-600">xxx-xxx-1234</div>
         </div>
       </div>
 
-
-      {/* OTP Input */}
-      <div className="mb-4">
+      <div className="flex flex-col items-center justify-center gap-[10px]">
+        {/* OTP Input */}
+      <div className="mb-4 otp-input-container">
         <FormOTPInput
           name="otpNumber"
           fixErrorContainer={false}
@@ -141,9 +150,9 @@ const GenLinkRequestOTPSection = (props: IProps) => {
       {/* Countdown / Resend */}
       {
         countdown > 0 ? (
-          <div className="text-sm text-gray-500">
+          <div className="text-[14px] text-gray-500">
             (Ref Code: {otpInfomation.refCode}) Resend OTP in{" "}
-            <span className="text-red-500">{countdownString}</span>
+            <span className="text-[14px]">{countdownString}</span>
           </div>
         ) : (
           <div
@@ -154,6 +163,19 @@ const GenLinkRequestOTPSection = (props: IProps) => {
           </div>
         )
       }
+
+      <AppButton
+        htmlType="button"
+        type="primary"
+        title="ยืนยัน"
+        disabled={otpValue.length < 6} // disabled จนกว่าจะกรอกครบ 6 ตัว
+        onClick={onSubmit}
+        className="!px-[16px] mt-[9px]"
+      />
+        </div>
+
+
+      
     </Form >
   );
 };
