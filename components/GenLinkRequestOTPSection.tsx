@@ -86,7 +86,7 @@ const GenLinkRequestOTPSection = (props: IProps) => {
       const response = await checkOtp(body);
       if (!response?.message) {
         setOtpModal(false);
-        router.push("/register")
+        router.push("/register/success")
       } else {
         if (response.message === SIGN_IN_ERROR_RESPONSE.EXPIRED) {
           form.setFields([
