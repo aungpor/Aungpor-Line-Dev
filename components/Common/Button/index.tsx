@@ -2,11 +2,11 @@ import { Button, ButtonProps } from "antd";
 import { CSSProperties } from "react";
 import SpinDotLoading from "../Loading/SpinDotLoading";
 
-interface IProps extends Omit<ButtonProps, "type"> {
+interface IProps extends Omit<ButtonProps, "type" | "color" | "variant"> {
   title: string;
   className?: string;
   textClassName?: string;
-  color?: string;
+  textColor?: string; // will be renamed to textColorProp in destructuring to avoid collisions
   backgroundColor?: string;
   style?: CSSProperties;
   isLoading?: boolean;
@@ -21,7 +21,7 @@ const AppButton = (props: IProps) => {
     style,
     className = "",
     textClassName = "",
-    color = "#FFFFFF",
+    textColor: textColorProp = "#FFFFFF",
     backgroundColor = "#00B751",
     type = "primary",
     variant = "fill",
@@ -88,10 +88,10 @@ const AppButton = (props: IProps) => {
     type === "primary"
       ? "#00B751"
       : type === "secondary"
-      ? "#D9D9D9"
-      : type === "tertiary"
-      ? "#FA6315"
-      : "#FF4D4F";
+        ? "#D9D9D9"
+        : type === "tertiary"
+          ? "#FA6315"
+          : "#FF4D4F";
 
   const containerStyles = getContainerStyles(outlineColor);
 
