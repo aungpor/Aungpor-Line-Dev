@@ -12,7 +12,7 @@ interface IProps extends Omit<InputProps, "name"> {
   className?: string;
   height?: number;
   required?: boolean;
-  type?: "text" | "email" | "phone" | "password" | "citizenId";
+  type?: "text" | "email" | "phone" | "password" | "citizenId" | "tenantId";
   requiredMessage?: string;
   fixErrorContainer?: boolean;
   wrapperCol?: ColProps;

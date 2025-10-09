@@ -2,9 +2,16 @@ import { Rule } from "antd/lib/form";
 
 export const useTextInputRules = (
   name?: string,
-  type?: "text" | "email" | "phone" | "checkbox" | "password" | "citizenId",
+  type?:
+    | "text"
+    | "email"
+    | "phone"
+    | "checkbox"
+    | "password"
+    | "citizenId"
+    | "tenantId",
   required = false,
-  requiredMessage?: string,
+  requiredMessage?: string
 ) => {
   const getTextInputRules = () => {
     const rules: Rule[] = [];
@@ -15,6 +22,22 @@ export const useTextInputRules = (
         message: requiredMessage ?? `${name ?? ""}`,
       };
       rules.push(requiredRule);
+    }
+
+    if (type === "tenantId") {
+      const tenantIdRule: Rule = {
+        validator: (_: any, value: string) => {
+          if (!value) return Promise.resolve();
+          // if (!/^\d+$/.test(value)) {
+          //   return Promise.reject("ต้องกรอกเฉพาะตัวเลข");
+          // }
+          if (value.length > 10) {
+            return Promise.reject("รูปแบบเลขผู้เช่าไม่ถูกต้อง");
+          }
+          return Promise.resolve();
+        },
+      };
+      rules.push(tenantIdRule);
     }
 
     if (type === "email") {

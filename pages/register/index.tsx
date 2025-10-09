@@ -1,3 +1,5 @@
+
+import React, { useState } from 'react';
 import AppButton from '@/components/Common/Button';
 import FormTextInput from '@/components/Common/FormTextInput';
 import { PTG_LOGO } from '@/constants/component';
@@ -7,14 +9,15 @@ import { useRouter } from "next/router";
 export default function Register() {
   const router = useRouter();
   const [form] = Form.useForm();
+  const [authenID, setAuthenID] = useState('');
 
-  // 🔹 เมื่อกด submit แล้วเรียกฟังก์ชันนี้
+  const isValidAuthenID = /^\d{10}$/.test(authenID);
+
+
   const handleSubmit = (values: any) => {
     console.log("📤 ส่งข้อมูลฟอร์ม:", values);
-
-    // ตัวอย่าง: ตรวจสอบค่าแล้ว redirect ไปหน้าอื่น
     if (values.authenID) {
-      router.push("register/otp"); // ไปหน้า OTP สมมติ
+      router.push("register/otp");
     }
   };
 
@@ -23,7 +26,7 @@ export default function Register() {
       <Form
         form={form}
         className="w-full max-w-[756px] flex flex-col items-center bg-white gap-[25px] p-8"
-        onFinish={handleSubmit} // ✅ ฟังก์ชัน submit
+        onFinish={handleSubmit}
       >
         <div>
           <img src={PTG_LOGO} alt="logo" className="h-[100px]" />
@@ -38,25 +41,27 @@ export default function Register() {
 
         <div className="flex flex-col items-center text-center w-full">
           <FormTextInput
-          required
-          name="authenID"
-          allowClear={false}
-          fixErrorContainer={true}
-          className="!h-[40px] !text-16"
-          placeholder="หมายเลขผู้เช่า"
-          formClassName="w-full"
-          requiredMessage='ระบุหมายเลขผู้เช่า'
-        />
+            required
+            type='tenantId'
+            name="authenID"
+            allowClear={false}
+            fixErrorContainer={true}
+            className="!h-[40px] !text-16"
+            placeholder="หมายเลขผู้เช่า"
+            formClassName="w-full"
+            requiredMessage='ระบุหมายเลขผู้เช่า'
+            value={authenID}
+            onChange={e => setAuthenID(e.target.value)}
+          />
 
-        <AppButton
-          htmlType="submit" // ✅ ให้ปุ่มเป็น type=submit
-          type="primary"
-          title="ลงทะเบียน"
-          className="!px-[16px] mt-[9px]"
-        />
+          <AppButton
+            htmlType="submit"
+            type="primary"
+            title="ลงทะเบียน"
+            className="!px-[16px] mt-[9px]"
+            disabled={!isValidAuthenID}
+          />
         </div>
-
-        
       </Form>
     </div>
   );
