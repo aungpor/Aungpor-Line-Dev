@@ -17,7 +17,7 @@ export default function Register() {
   const handleSubmit = (values: any) => {
     console.log("📤 ส่งข้อมูลฟอร์ม:", values);
     if (values.authenID) {
-      router.push("register/otp");
+      router.push("/register/pdpa");
     }
   };
 
