@@ -50,7 +50,10 @@ const PDPAConsentContent = () => {
                 <div className="w-full">
                     <div
                         ref={contentRef}
-                        className="pdpa-consent-content overflow-auto md:max-h-[500px] max-h-[580px] rounded-md mb-4 text-[12px] leading-[22px] text-text-secondary max-w-[756px] mx-auto"
+                        className="pdpa-consent-content overflow-auto rounded-md mb-4 text-[12px] leading-[22px] text-text-secondary max-w-[756px] mx-auto"
+                        style={{
+                            maxHeight: `calc(100vh - 180px)`,
+                        }}
                         onScroll={onScrollPDPAConsentHandler}
                         role="region"
                         aria-label="PDPA consent content"

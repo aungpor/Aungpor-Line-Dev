@@ -16,11 +16,10 @@ export default function Register() {
   const isValidAuthenID = /^\d{6,8}$/.test(authenID);
 
   const handleSubmit = (values: any) => {
-    console.log("📤 ส่งข้อมูลฟอร์ม:", values);
-    setIsModalVisible(true)
-    // if (values.authenID) {
-    //   router.push("/register/pdpa");
-    // }
+    // setIsModalVisible(true)
+    if (values.authenID) {
+      router.push("/register/pdpa");
+    }
   };
 
   return (
@@ -65,7 +64,7 @@ export default function Register() {
             disabled={!isValidAuthenID}
           />
 
-          <ModalNotification isVisible={isModalVisible} onClose={() => { setIsModalVisible(false) }} />
+          <ModalNotification isVisible={isModalVisible} onClose={() => { setIsModalVisible(false) }} page='register' />
         </div>
       </Form>
     </div>
