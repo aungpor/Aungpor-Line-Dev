@@ -1,13 +1,36 @@
 import React from "react";
 import ModalPopup from "../ModalPopup";
+import { SIGN_IN_ERROR_RESPONSE } from "@/constants/enum/component";
 
 interface IProps {
   isVisible: boolean;
   onClose: () => void;
   page?: string;
+  otpError?: string;
 }
 
-const ModalNotification = ({ isVisible, page = "", onClose }: IProps) => {
+const ModalNotification = ({ isVisible, page = "", otpError = "", onClose }: IProps) => {
+
+  const getOtpErrorMessage = (otpError: string) => {
+    switch (otpError) {
+      case SIGN_IN_ERROR_RESPONSE.EXPIRED:
+        return {
+          title: "OTP หมดอายุ",
+          subtitle: "กรุณาขอ OTP ใหม่"
+        };
+      case SIGN_IN_ERROR_RESPONSE.EXCEEDED:
+        return {
+          title: "เกินจำนวนครั้งที่กำหนด",
+          subtitle: "กรุณาลองใหม่ในภายหลัง"
+        };
+      default:
+        return {
+          title: "OTP ไม่ถูกต้อง",
+          subtitle: "กรุณาตรวจสอบอีกครั้ง"
+        };
+    }
+  };
+
   return (
     <ModalPopup
       isVisible={isVisible}
@@ -43,12 +66,16 @@ const ModalNotification = ({ isVisible, page = "", onClose }: IProps) => {
             {page == "register" ? (<div className="flex flex-col justify-center items-center">
               <div className="text-[18px] font-medium">ไม่พบรหัสผู้เช่าในระบบ</div>
             </div>) : (
-              <div className="flex flex-col justify-center items-center">
-                <div className="text-[18px] font-medium">OTP ไม่ถูกต้อง</div>
-                <div className="text-[18px] font-medium">
-                  กรุณาตรวจสอบอีกครั้ง
+              otpError && (
+                <div className="flex flex-col justify-center items-center">
+                  <div className="text-[18px] font-medium">
+                    {getOtpErrorMessage(otpError).title}
+                  </div>
+                  <div className="text-[18px] font-medium">
+                    {getOtpErrorMessage(otpError).subtitle}
+                  </div>
                 </div>
-              </div>
+              )
             )}
           </div>
         </div>

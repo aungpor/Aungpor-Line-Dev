@@ -5,7 +5,7 @@ import {
   ERROR_MESSAGE,
   SIGN_IN_ERROR_RESPONSE,
 } from "@/constants/enum/component";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { getOTP } from "@/services/sms.service";
 import { checkOtp } from "@/services/user.service";
 import useBookingStore from "@/stores/useBookingStore";
@@ -16,6 +16,7 @@ import { InputProps } from "react-otp-input";
 import { PATOIS_LOGO, PTG_LOGO } from "@/constants/component";
 import { useRouter } from "next/router";
 import AppButton from "./Common/Button";
+import ModalNotification from "./Modal/ModalNotification";
 
 interface IProps {
   className?: string;
@@ -25,6 +26,9 @@ const GenLinkRequestOTPSection = (props: IProps) => {
   const { className = "" } = props;
   const [form] = Form.useForm();
   const router = useRouter();
+
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [otpError, setOtpError] = useState("");
 
   const { countdown, countdownString, handleCountdown } = useCountdown({
     seconds: 60,
@@ -88,18 +92,22 @@ const GenLinkRequestOTPSection = (props: IProps) => {
         setOtpModal(false);
         router.push("/register/success")
       } else {
+        setIsModalVisible(true)
         if (response.message === SIGN_IN_ERROR_RESPONSE.EXPIRED) {
-          form.setFields([
-            { name: "otpNumber", errors: [AUTHENTICATION_ERROR.OTP_EXPIRED] },
-          ]);
+          setOtpError(SIGN_IN_ERROR_RESPONSE.EXPIRED)
+          // form.setFields([
+          //   { name: "otpNumber", errors: [AUTHENTICATION_ERROR.OTP_EXPIRED] },
+          // ]);
         } else if (response.message === SIGN_IN_ERROR_RESPONSE.EXCEEDED) {
-          form.setFields([
-            { name: "otpNumber", errors: [AUTHENTICATION_ERROR.OTP_EXCEEDED] },
-          ]);
+          setOtpError(SIGN_IN_ERROR_RESPONSE.EXCEEDED)
+          // form.setFields([
+          //   { name: "otpNumber", errors: [AUTHENTICATION_ERROR.OTP_EXCEEDED] },
+          // ]);
         } else {
-          form.setFields([
-            { name: "otpNumber", errors: [AUTHENTICATION_ERROR.OTP_INVALID] },
-          ]);
+          setOtpError(SIGN_IN_ERROR_RESPONSE.INCORRECT)
+          // form.setFields([
+          //   { name: "otpNumber", errors: [AUTHENTICATION_ERROR.OTP_INVALID] },
+          // ]);
         }
       }
     } catch (error) {
@@ -136,46 +144,46 @@ const GenLinkRequestOTPSection = (props: IProps) => {
 
       <div className="flex flex-col items-center justify-center gap-[10px]">
         {/* OTP Input */}
-      <div className="mb-4 otp-input-container">
-        <FormOTPInput
-          name="otpNumber"
-          fixErrorContainer={false}
-          onChange={onInputOTPChange}
-          numInputs={6}
-          className="!w-[42px] !h-[48px] text-xl text-center border border-gray-300 rounded-md focus:border-green-500 focus:ring-2 focus:ring-green-500" renderInput={function (inputProps: InputProps, index: number): React.ReactNode {
-            throw new Error("Function not implemented.");
-          }} />
-      </div>
-
-      {/* Countdown / Resend */}
-      {
-        countdown > 0 ? (
-          <div className="text-[14px] text-gray-500">
-            (Ref Code: {otpInfomation.refCode}) Resend OTP in{" "}
-            <span className="text-[14px]">{countdownString}</span>
-          </div>
-        ) : (
-          <div
-            onClick={onResetOTPHandler}
-            className="text-sm text-green-600 cursor-pointer hover:underline"
-          >
-            ส่งอีกครั้ง
-          </div>
-        )
-      }
-
-      <AppButton
-        htmlType="button"
-        type="primary"
-        title="ยืนยัน"
-        disabled={otpValue.length < 6} // disabled จนกว่าจะกรอกครบ 6 ตัว
-        onClick={onSubmit}
-        className="!px-[16px] mt-[9px]"
-      />
+        <div className="mb-4 otp-input-container">
+          <FormOTPInput
+            name="otpNumber"
+            fixErrorContainer={false}
+            onChange={onInputOTPChange}
+            numInputs={6}
+            className="!w-[42px] !h-[48px] text-xl text-center border border-gray-300 rounded-md focus:border-green-500 focus:ring-2 focus:ring-green-500" renderInput={function (inputProps: InputProps, index: number): React.ReactNode {
+              throw new Error("Function not implemented.");
+            }} />
         </div>
 
+        {/* Countdown / Resend */}
+        {
+          countdown > 0 ? (
+            <div className="text-[14px] text-gray-500">
+              (Ref Code: {otpInfomation.refCode}) Resend OTP in{" "}
+              <span className="text-[14px]">{countdownString}</span>
+            </div>
+          ) : (
+            <div
+              onClick={onResetOTPHandler}
+              className="text-sm text-green-600 cursor-pointer hover:underline"
+            >
+              ส่งอีกครั้ง
+            </div>
+          )
+        }
 
-      
+        <AppButton
+          htmlType="button"
+          type="primary"
+          title="ยืนยัน"
+          disabled={otpValue.length < 6} // disabled จนกว่าจะกรอกครบ 6 ตัว
+          onClick={onSubmit}
+          className="!px-[16px] mt-[9px]"
+        />
+      </div>
+
+      <ModalNotification isVisible={isModalVisible} otpError={otpError} onClose={() => { setIsModalVisible(false) }} page='otp' />
+
     </Form >
   );
 };
