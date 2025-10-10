@@ -5,20 +5,22 @@ import FormTextInput from '@/components/Common/FormTextInput';
 import { PTG_LOGO } from '@/constants/component';
 import { Form } from 'antd';
 import { useRouter } from "next/router";
+import ModalNotification from '@/components/Modal/ModalNotification';
 
 export default function Register() {
   const router = useRouter();
   const [form] = Form.useForm();
   const [authenID, setAuthenID] = useState('');
+  const [isModalVisible, setIsModalVisible] = useState(false);
 
-  const isValidAuthenID = /^\d{10}$/.test(authenID);
-
+  const isValidAuthenID = /^\d{6,8}$/.test(authenID);
 
   const handleSubmit = (values: any) => {
     console.log("📤 ส่งข้อมูลฟอร์ม:", values);
-    if (values.authenID) {
-      router.push("/register/pdpa");
-    }
+    setIsModalVisible(true)
+    // if (values.authenID) {
+    //   router.push("/register/pdpa");
+    // }
   };
 
   return (
@@ -61,6 +63,8 @@ export default function Register() {
             className="!px-[16px] mt-[9px]"
             disabled={!isValidAuthenID}
           />
+
+          <ModalNotification isVisible={isModalVisible} onClose={() => {setIsModalVisible(false)}}/>
         </div>
       </Form>
     </div>

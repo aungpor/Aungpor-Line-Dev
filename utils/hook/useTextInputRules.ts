@@ -31,7 +31,7 @@ export const useTextInputRules = (
           // if (!/^\d+$/.test(value)) {
           //   return Promise.reject("ต้องกรอกเฉพาะตัวเลข");
           // }
-          if (value.length > 10) {
+          if (value.length > 8) {
             return Promise.reject("รูปแบบเลขผู้เช่าไม่ถูกต้อง");
           }
           return Promise.resolve();

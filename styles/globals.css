@@ -488,3 +488,14 @@ button.button-container.ant-btn-loading {
         box-shadow: 0px 0px 0px 2px rgba(72, 170, 21, 0.20),
     }
 }
+
+.modal-popup-warpper {
+    .ant-modal-content {
+        background: none;
+        box-shadow: none;
+    } 
+
+    .ant-input-group {
+        background: white;
+    }
+}
