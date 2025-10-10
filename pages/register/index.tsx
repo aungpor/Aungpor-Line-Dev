@@ -27,9 +27,10 @@ export default function Register() {
     <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-10 flex justify-center">
       <Form
         form={form}
-        className="w-full max-w-[756px] flex flex-col items-center bg-white gap-[25px] p-8"
+        className="w-full max-w-[354px] md:max-w-[756px] flex flex-col items-center bg-white gap-[25px] p-8"
         onFinish={handleSubmit}
       >
+
         <div>
           <img src={PTG_LOGO} alt="logo" className="h-[100px]" />
         </div>
@@ -64,7 +65,7 @@ export default function Register() {
             disabled={!isValidAuthenID}
           />
 
-          <ModalNotification isVisible={isModalVisible} onClose={() => {setIsModalVisible(false)}}/>
+          <ModalNotification isVisible={isModalVisible} onClose={() => { setIsModalVisible(false) }} />
         </div>
       </Form>
     </div>

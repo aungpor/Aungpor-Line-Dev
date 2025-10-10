@@ -45,6 +45,9 @@ const ModalPopup = ({
         justifyContent: "center",
         margin: 0,
       }}
+      modalRender={(modal) => (
+        <div style={{ transform: "translateY(-115px)" }}>{modal}</div>
+      )}
     >
       {closeButton == "top-right" && (
         <div className="right-[1px] lg:right-[60px] absolute">

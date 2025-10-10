@@ -14,13 +14,13 @@ export default function RegisterSuccess() {
 
           <div className="text-xl font-medium mb-2">ลงทะเบียนสำเร็จ!</div>
           <div className="font-normal text-[14px] leading-[11px] text-center mb-2">
-  <div>
-    ยินดีต้อนรับ{" "}
-    <span className="text-green-600 font-medium">คุณวราภรณ์ มีสุข</span>
-  </div>
-  <br />
-  คุณได้ทำการลงทะเบียนสำเร็จแล้ว
-</div>
+            <div>
+              ยินดีต้อนรับ{" "}
+              <span className="text-green-600 font-medium">คุณวราภรณ์ มีสุข</span>
+            </div>
+            <br />
+            คุณได้ทำการลงทะเบียนสำเร็จแล้ว
+          </div>
 
 
         </div>
