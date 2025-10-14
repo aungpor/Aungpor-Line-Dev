@@ -4,7 +4,7 @@ export default function Document() {
   return (
     <Html lang="en">
       <Head>
-        <title>Aungpor Web</title>
+        <title>Line OA</title>
       </Head>
       <body className="antialiased">
         <Main />

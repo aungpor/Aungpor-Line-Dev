@@ -1,7 +1,9 @@
 import { PDPA_HTML } from "@/constants/pdpaContentText";
+import { getRegistrationStep, setRegistrationStep } from "@/utils/registration";
 import { Skeleton } from "antd";
 import AppButton from "components/Common/Button";
 import { IUtmQuery } from "interface/auth.interface";
+import { GetServerSideProps } from "next";
 import { useRouter } from "next/router";
 import { useEffect, useState, useRef } from "react";
 
@@ -21,6 +23,13 @@ const PDPAConsentContent = () => {
         }
     };
 
+//     useEffect(() => {
+//     const step = getRegistrationStep();
+//     if (step !== "pdpa") {
+//       router.replace("/register");
+//     }
+//   }, []);
+
     // ถ้าเนื้อหาสั้น (ไม่ต้องเลื่อน) ให้ถือว่าอ่านแล้ว
     useEffect(() => {
         if (!isLoading && contentRef.current) {
@@ -33,6 +42,7 @@ const PDPAConsentContent = () => {
 
     const handleSubmit = () => {
         if (isReadConsent || !isLoading) {
+            setRegistrationStep("otp");
             router.push("/register/otp");
         }
     };
@@ -99,6 +109,22 @@ const PDPAConsentContent = () => {
             </div>
         </div>
     );
+};
+
+export const getServerSideProps: GetServerSideProps = async (ctx) => {
+  const cookies = ctx.req.cookies;
+  const step = cookies.registrationStep;
+
+  if (step !== "pdpa") {
+    return {
+      redirect: {
+        destination: "/register",
+        permanent: false,
+      },
+    };
+  }
+
+  return { props: {} };
 };
 
 export default PDPAConsentContent;

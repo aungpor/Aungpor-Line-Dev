@@ -6,6 +6,7 @@ import { PTG_LOGO } from '@/constants/component';
 import { Form } from 'antd';
 import { useRouter } from "next/router";
 import ModalNotification from '@/components/Modal/ModalNotification';
+import { setRegistrationStep } from '@/utils/registration';
 
 export default function Register() {
   const router = useRouter();
@@ -18,6 +19,7 @@ export default function Register() {
   const handleSubmit = (values: any) => {
     // setIsModalVisible(true)
     if (values.authenID) {
+      setRegistrationStep("pdpa");
       router.push("/register/pdpa");
     }
   };
